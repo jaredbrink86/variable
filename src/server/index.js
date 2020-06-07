@@ -10,13 +10,17 @@ app.use(cors());
 
 app.post("/transactions", async (req, res) => {
   try {
-    const { amount } = req.body;
-    console.log(amount);
+    const transaction = req.body;
+    //TODO use type to find foreign key id and store in variable to add to insert query
+    const typeId = await pool.query(
+      `SELECT id FROM transaction_type WHERE (name = ${transaction.type})`
+    );
     const newTransaction = await pool.query(
-      "INSERT INTO transactions (amount) VALUES($1)",
+      "INSERT INTO transactions (transaction.amount) VALUES($1)",
       [amount]
     );
     console.log(res.json(newTransaction));
+    res.json(transaction);
   } catch (err) {
     console.error(err.message);
   }
@@ -37,8 +41,21 @@ app.post("/types", async (req, res) => {
 });
 
 app.get("/types", async (req, res) => {
-  const types = await pool.query("SELECT * FROM transaction_types");
-  res.json(types);
+  try {
+    const types = await pool.query("SELECT * FROM transaction_types");
+    res.json(types.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.get("/transactions", async (req, res) => {
+  try {
+    const transactions = await pool.query("SELECT * FROM transactions");
+    res.json(transactions.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
 });
 
 app.listen(PORT);
