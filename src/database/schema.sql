@@ -3,12 +3,41 @@ CREATE DATABASE variable;
 CREATE TABLE transactions
 (
     id SERIAL PRIMARY KEY,
-    type_id INTEGER REFERENCES transaction_types(id),
+    type_id INTEGER REFERENCES categories(id),
     amount NUMERIC NOT NULL
 );
 
-CREATE TABLE transaction_types
+CREATE TABLE categories
 (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL
+    category VARCHAR(50) NOT NULL
 );
+
+INSERT INTO categories
+    (category)
+VALUES
+    ('Groceries');
+INSERT INTO categories
+    (category)
+VALUES
+    ('Eating Out');
+INSERT INTO categories
+    (category)
+VALUES
+    ('Gas');
+INSERT INTO categories
+    (category)
+VALUES
+    ('Entertainment');
+INSERT INTO categories
+    (category)
+VALUES
+    ('Shopping');
+INSERT INTO categories
+    (category)
+VALUES
+    ('Travel');
+INSERT INTO categories
+    (category)
+VALUES
+    ('Personal Care');

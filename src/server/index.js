@@ -1,49 +1,34 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const app = express();
-const PORT = 3000;
-const cors = require("cors");
 const pool = require("../database/db.js");
+const cors = require("cors");
 
-app.use(bodyParser.json());
+const PORT = 4000;
+const _app_folder = "dist/variable";
+
+const app = express();
+
 app.use(cors());
+app.use(bodyParser.json());
 
-app.post("/transactions", async (req, res) => {
+app.get(express.static(_app_folder));
+
+// app.all("*", function (req, res) {
+//   res.status(200).sendFile(`/`, { root: _app_folder });
+// });
+
+app.get("/", async (req, res) => {
   try {
-    const transaction = req.body;
-    //TODO use type to find foreign key id and store in variable to add to insert query
-    const typeId = await pool.query(
-      `SELECT id FROM transaction_type WHERE (name = ${transaction.type})`
-    );
-    const newTransaction = await pool.query(
-      "INSERT INTO transactions (transaction.amount) VALUES($1)",
-      [amount]
-    );
-    console.log(res.json(newTransaction));
-    res.json(transaction);
+    res.json("hello world");
   } catch (err) {
     console.error(err.message);
   }
 });
 
-app.post("/types", async (req, res) => {
+app.get("/categories", async (req, res) => {
   try {
-    const { name } = req.body;
-    console.log(name);
-    const newTransactionType = await pool.query(
-      "INSERT INTO transaction_types (name) VALUES($1)",
-      [name]
-    );
-    console.log(res.json(newTransactionType));
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-app.get("/types", async (req, res) => {
-  try {
-    const types = await pool.query("SELECT * FROM transaction_types");
-    res.json(types.rows);
+    const categories = await pool.query("SELECT * FROM categories");
+    res.json(categories.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -58,4 +43,36 @@ app.get("/transactions", async (req, res) => {
   }
 });
 
-app.listen(PORT);
+app.post("/transactions", async (req, res) => {
+  try {
+    const transaction = req.body;
+    const newTransaction = await pool.query(
+      "INSERT INTO transactions (amount, type) VALUES($1, $2)",
+      [transaction.amount, transaction.type]
+    );
+    console.log(res.json(newTransaction));
+    res.json(transaction);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.post("/types", async (req, res) => {
+  try {
+    const { category } = req.body;
+    console.log(category);
+    const newCategory = await pool.query(
+      "INSERT INTO categories (category) VALUES($1)",
+      [name]
+    );
+    console.log(res.json(newCategory));
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(
+    `Node Express servoer for ${app.name} listening on http://localhost:${PORT}`
+  );
+});

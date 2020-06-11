@@ -20,6 +20,8 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^3.4.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "pg": "^8.2.1",
