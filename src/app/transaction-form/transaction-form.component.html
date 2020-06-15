@@ -1,17 +1,24 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <button class="btn btn-primary">New Transaction</button>
+        <div class="col-md-2">
+            <button class="btn btn-success" (click)="onNewTransactionClick()">New Transaction</button>
         </div>
-        <div class="col-md-4">
-            <form>
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select class="form-control" id="category">
-                        <option *ngFor="let category of categories">{{ category.category }}</option>
-                    </select>
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm" class="form-inline" *ngIf="displayForm === true">
+            <div class="form-group">
+                <label for="category" style="margin-right:5px;">Category</label>
+                <select class="form-control" id="category" ngModel name="category">
+                    <option *ngFor="let category of categories">{{ category.category }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="transactionAmount">Amount (in dollars)</label>
+                <div class="input-group">
+                    <div class="input-group-addon">$</div>
+                    <input name="transactionAmount" type="text" class="form-control" id="exampleInputAmount"
+                        placeholder="Amount" [(ngModel)]="transactionAmount" (blur)=formatCurrency($event)>
                 </div>
-            </form>
-        </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Transaction</button>
+        </form>
     </div>
 </div>

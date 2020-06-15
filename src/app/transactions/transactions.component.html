@@ -1,0 +1,26 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Category</th>
+            <th scope="col">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr [class]="checkCategory" *ngIf="test === true">
+            <th scope="row">data item{{ transaction.amount }}</th>
+            <td class="active">data item{{ transaction.category }}</td>
+            <td class="active">data item{{ transaction.amount }}</td>
+        </tr>
+        <tr class="danger">
+            <td class="active">data item</td>
+            <td class="active">data item</td>
+            <td class="active">data item</td>
+        </tr>
+        <tr class="warning">
+            <td class="active">data item</td>
+            <td class="active">data item</td>
+            <td class="active">data item</td>
+        </tr>
+    </tbody>
+</table>
