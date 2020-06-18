@@ -6,9 +6,10 @@
         <form (ngSubmit)="onSubmit(f)" #f="ngForm" class="form-inline" *ngIf="displayForm === true">
             <div class="form-group">
                 <label for="category" style="margin-right:5px;">Category</label>
-                <select class="form-control" id="category" ngModel name="category">
+                <select class="form-control" id="category" ngModel name="category" #name="ngModel">
                     <option *ngFor="let category of categories">{{ category.category }}</option>
                 </select>
+
             </div>
             <div class="form-group">
                 <label class="sr-only" for="transactionAmount">Amount (in dollars)</label>
