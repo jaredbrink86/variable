@@ -15,8 +15,7 @@ export class TransactionFormComponent implements OnInit {
   categories: Category[] = [];
   displayForm = false;
   transactionAmount: string;
-  dollars;
-  cents;
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -60,11 +59,11 @@ export class TransactionFormComponent implements OnInit {
       form.value.category,
       form.value.transactionAmount
     );
-    console.log(transaction);
     this.http
       .post("http://localhost:4000/transactions", transaction)
       .subscribe((responseData) => {
         console.log(responseData);
       });
+    form.reset();
   }
 }
