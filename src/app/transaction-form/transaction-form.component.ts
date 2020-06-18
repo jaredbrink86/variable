@@ -1,10 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ɵsetCurrentInjector } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { map } from "rxjs/operators";
 
 import { Category } from "./category.model";
 import { Transaction } from "./transaction.model";
+import { TransactionService } from "./transactions.service";
+import { CategoriesService } from "./categories.service";
 
 @Component({
   selector: "app-transaction-form",
@@ -16,54 +18,42 @@ export class TransactionFormComponent implements OnInit {
   displayForm = false;
   transactionAmount: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private transactionService: TransactionService,
+    private categoriesService: CategoriesService
+  ) {}
 
   ngOnInit() {
-    this.getCategories();
+    this.categoriesService.fetchCategories().subscribe((categories) => {
+      this.categories = categories;
+    });
   }
 
   getCategories() {
-    this.http
-      .get("http://localhost:4000/categories")
-      .pipe(
-        map((responseData) => {
-          const categoriesArray = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              categoriesArray.push({ ...responseData[key] });
-            }
-          }
-          return categoriesArray;
-        })
-      )
-      .subscribe((data) => {
-        this.categories = data;
-      });
+    this.categoriesService.fetchCategories().subscribe((categories) => {
+      this.categories = categories;
+    });
   }
 
   onNewTransactionClick() {
     this.displayForm = !this.displayForm;
   }
 
-  formatCurrency(event) {
+  onSubmit(form: NgForm) {
+    const category = form.value.category;
+    const transactionAmount = form.value.transactionAmount;
+    const transaction = new Transaction(category, transactionAmount);
+    this.transactionService.createAndStoreTransactions(transaction);
+    form.reset();
+  }
+
+  private formatCurrency(event) {
     var uy = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
       maximumFractionDigits: 2,
     }).format(event.target.value);
     this.transactionAmount = uy.slice(1);
-  }
-
-  onSubmit(form: NgForm) {
-    const transaction = new Transaction(
-      form.value.category,
-      form.value.transactionAmount
-    );
-    this.http
-      .post("http://localhost:4000/transactions", transaction)
-      .subscribe((responseData) => {
-        console.log(responseData);
-      });
-    form.reset();
   }
 }
