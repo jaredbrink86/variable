@@ -9,8 +9,9 @@ CREATE TABLE categories
 CREATE TABLE transactions
 (
     id SERIAL PRIMARY KEY,
+    transaction_date DATE NOT NULL,
     category_id INTEGER REFERENCES categories(id),
-    amount NUMERIC NOT NULL
+    transaction_amount NUMERIC NOT NULL
 );
 
 

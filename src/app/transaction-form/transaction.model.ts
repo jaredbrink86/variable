@@ -1,6 +1,6 @@
 export class Transaction {
   constructor(
-    public date: string,
+    public date: object,
     public category: string,
     public amount: string
   ) {}

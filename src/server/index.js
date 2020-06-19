@@ -58,12 +58,13 @@ app.post("/categories", async (req, res) => {
 app.post("/transactions", async (req, res) => {
   try {
     const transactionAmount = +req.body.amount;
+    const transactionDate = req.body.date;
     const category = await pool.query(
       `SELECT id FROM categories where category = '${req.body.category}'`
     );
     const newTransaction = await pool.query(
-      "INSERT INTO transactions (category_id, amount) VALUES($1, $2)",
-      [category.rows[0].id, transactionAmount]
+      "INSERT INTO transactions (transaction_date, category_id, transaction_amount) VALUES($1, $2, $3)",
+      [transactionDate, category.rows[0].id, transactionAmount]
     );
     res.json("Record Added");
   } catch (err) {

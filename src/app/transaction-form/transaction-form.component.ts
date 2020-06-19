@@ -37,16 +37,24 @@ export class TransactionFormComponent implements OnInit {
   }
 
   onNewTransactionClick() {
-    this.displayForm = !this.displayForm;
+    if (!this.displayForm) {
+      this.displayForm = !this.displayForm;
+    }
+  }
+
+  onCategorySelect() {
+    console.log("clicked");
   }
 
   onSubmit(form: NgForm) {
+    console.log(form.value);
     const category = form.value.category;
     const transactionAmount = form.value.transactionAmount;
-    const date = form.value.date;
+    const date = form.value.transactionDate;
     const transaction = new Transaction(date, category, transactionAmount);
     this.transactionService.createAndStoreTransactions(transaction);
     form.reset();
+    this.displayForm = !this.displayForm;
   }
 
   private formatCurrency(event) {
