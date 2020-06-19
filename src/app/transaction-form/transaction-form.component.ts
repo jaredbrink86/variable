@@ -43,7 +43,8 @@ export class TransactionFormComponent implements OnInit {
   onSubmit(form: NgForm) {
     const category = form.value.category;
     const transactionAmount = form.value.transactionAmount;
-    const transaction = new Transaction(category, transactionAmount);
+    const date = form.value.date;
+    const transaction = new Transaction(date, category, transactionAmount);
     this.transactionService.createAndStoreTransactions(transaction);
     form.reset();
   }

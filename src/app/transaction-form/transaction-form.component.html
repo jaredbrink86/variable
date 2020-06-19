@@ -19,6 +19,11 @@
                         placeholder="Amount" [(ngModel)]="transactionAmount" (blur)=formatCurrency($event)>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="date">Transaction Date</label>
+                <input id="transaction-date" name="transactionDate" type="date" class="form-control">
+
+            </div>
             <button type="submit" class="btn btn-primary">Add Transaction</button>
         </form>
     </div>

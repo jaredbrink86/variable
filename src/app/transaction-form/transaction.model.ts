@@ -1,3 +1,7 @@
 export class Transaction {
-  constructor(public category: string, public amount: string) {}
+  constructor(
+    public date: string,
+    public category: string,
+    public amount: string
+  ) {}
 }
