@@ -1,9 +1,11 @@
-<table class="table table-striped">
+<table class="table table-striped table-hover">
     <thead>
         <tr>
             <th scope="col">#</th>
+            <th scope="col">Date</th>
             <th scope="col">Category</th>
             <th scope="col">Amount</th>
+            <th class="pull-right">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -13,29 +15,45 @@
             <td class="active">data item{{ transaction.amount }}</td>
         </tr>
         <tr class="danger">
-            <td class="active">1</td>
-            <td class="active">Groceries</td>
-            <td class="active">$122.33</td>
-            <td class="active"><button class="btn-danger">Delete</button></td>
+            <td>1</td>
+            <td>1/2/2019</td>
+            <td>Groceries</td>
+            <td>$122.33</td>
+            <td>
+                <button class="btn btn-danger pull-right">Delete</button>
+                <button class="btn btn-primary pull-right">Edit</button>
+            </td>
         </tr>
         <tr class="warning">
-            <td class="active">2</td>
-            <td class="active">Eating Out</td>
-            <td class="active">45.65</td>
-            <td class="active"><button class="btn-danger">Delete</button></td>
+            <td>2</td>
+            <td>1/2/2019</td>
+            <td>Eating Out</td>
+            <td>45.65</td>
+            <td>
+                <button class="btn btn-danger pull-right">Delete</button>
+                <button class="btn btn-primary pull-right">Edit</button>
+            </td>
         </tr>
         <tr class="warning">
-            <td class="active">2</td>
-            <td class="active">Eating Out</td>
-            <td class="active">57.65</td>
-            <td class="active"><button class="btn-danger">Delete</button></td>
+            <td>2</td>
+            <td>1/2/2019</td>
+            <td>Eating Out</td>
+            <td>57.65</td>
+            <td>
+                <button class="btn btn-danger pull-right">Delete</button>
+                <button class="btn btn-primary pull-right">Edit</button>
+            </td>
 
         </tr>
         <tr class="success">
-            <td class="active">2</td>
-            <td class="active">Gas</td>
-            <td class="active">45.65</td>
-            <td class="active"><button class="btn-danger">Delete</button></td>
+            <td>2</td>
+            <td>1/2/2019</td>
+            <td>Gas</td>
+            <td>45.65</td>
+            <td>
+                <button class="btn btn-danger pull-right">Delete</button>
+                <button class="btn btn-primary pull-right">Edit</button>
+            </td>
         </tr>
     </tbody>
 </table>
