@@ -17,6 +17,7 @@ export class TransactionFormComponent implements OnInit {
   categories: Category[] = [];
   displayForm = false;
   transactionAmount: string;
+  defaultCategory = "choose";
 
   constructor(
     private http: HttpClient,
@@ -47,7 +48,7 @@ export class TransactionFormComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
+    console.log(form);
     const category = form.value.category;
     const transactionAmount = form.value.transactionAmount;
     const date = form.value.transactionDate;
@@ -63,6 +64,10 @@ export class TransactionFormComponent implements OnInit {
       currency: "USD",
       maximumFractionDigits: 2,
     }).format(event.target.value);
-    this.transactionAmount = uy.slice(1);
+    if (uy === "$NaN") {
+      this.transactionAmount = "";
+    } else {
+      this.transactionAmount = uy.slice(1);
+    }
   }
 }
