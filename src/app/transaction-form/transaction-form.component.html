@@ -35,7 +35,7 @@
                     <div class="input-group-addon">$</div>
                     <input autocomplete="off" name="transactionAmount" type="text" class="form-control"
                         id="exampleInputAmount" placeholder="Amount" [(ngModel)]="transactionAmount" #amount="ngModel"
-                        (blur)=formatCurrency($event)>
+                        (blur)=formatCurrency($event) required>
                 </div>
                 <span *ngIf="transactionAmount === '' && amount.touched" class="help-block">
                     Please enter a valid amount
@@ -47,6 +47,8 @@
             <div class="form-group col-xs-3 col-md-3">
                 <button [disabled]="!f.valid" type="submit" class="btn btn-primary" style="margin-top: 25px;">Add
                     Transaction</button>
+                <button type="button" class="btn btn-danger" style="margin-top: 25px;"
+                    (click)="onCancelForm()">Cancel</button>
             </div>
         </form>
     </div>

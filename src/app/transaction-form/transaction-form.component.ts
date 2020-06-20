@@ -46,6 +46,9 @@ export class TransactionFormComponent implements OnInit {
   onCategorySelect() {
     console.log("clicked");
   }
+  onCancelForm() {
+    this.displayForm = !this.displayForm;
+  }
 
   onSubmit(form: NgForm) {
     console.log(form);
@@ -66,6 +69,8 @@ export class TransactionFormComponent implements OnInit {
     }).format(event.target.value);
     if (uy === "$NaN") {
       this.transactionAmount = "";
+    } else if (uy === "$0.00") {
+      this.transactionAmount === "0.00";
     } else {
       this.transactionAmount = uy.slice(1);
     }
