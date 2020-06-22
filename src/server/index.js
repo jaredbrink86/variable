@@ -71,7 +71,16 @@ app.post('/transactions', async (req, res) => {
       'INSERT INTO transactions (transaction_date, category_id, transaction_amount) VALUES($1, $2, $3)',
       [transactionDate, category.rows[0].id, transactionAmount]
     );
-    res.json('Record Added');
+    res.json('Transaction Added');
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.post('/transactions/:id', async (req, res) => {
+  try {
+    await pool.query(`DELETE FROM transactions WHERE id = ${req.body.id}`);
+    res.json('Transaction Deleted');
   } catch (err) {
     console.error(err.message);
   }

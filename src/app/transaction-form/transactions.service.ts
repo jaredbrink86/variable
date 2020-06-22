@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  transactionAdded = new EventEmitter<string>();
+  transactionChanged = new EventEmitter<string>();
 
   constructor(private http: HttpClient) {}
 
@@ -29,5 +29,9 @@ export class TransactionService {
           return transactionsArray;
         })
       );
+  }
+
+  deleteTransaction(id: string) {
+    return this.http.post(`http://localhost:4000/transactions/${id}`, { id });
   }
 }

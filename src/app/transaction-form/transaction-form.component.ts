@@ -57,7 +57,7 @@ export class TransactionFormComponent implements OnInit {
       .createAndStoreTransactions(transaction)
       .subscribe((responseData) => {
         console.log(responseData);
-        this.transactionService.transactionAdded.emit('transaction added');
+        this.transactionService.transactionChanged.emit('transaction changed');
       });
     form.reset();
     this.displayForm = !this.displayForm;

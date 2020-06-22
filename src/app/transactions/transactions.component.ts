@@ -15,8 +15,8 @@ export class TransactionsComponent implements OnInit {
   constructor(private transactionService: TransactionService) {}
 
   ngOnInit() {
-    this.transactionService.transactionAdded.subscribe((data) => {
-      if (data === 'transaction added')
+    this.transactionService.transactionChanged.subscribe((data) => {
+      if (data === 'transaction changed')
         this.transactionService.fetchTransactions().subscribe((data) => {
           this.transactions = data;
         });
@@ -29,8 +29,11 @@ export class TransactionsComponent implements OnInit {
   getClass(t: HTMLInputElement) {}
 
   onDelete(id: number) {
-    this.transactionService.deleteRecord().subscribe((responseData) => {
-      console.log(responseData);
-    });
+    this.transactionService
+      .deleteTransaction(id.toString())
+      .subscribe((responseData) => {
+        console.log(responseData);
+        this.transactionService.transactionChanged.emit('transaction changed');
+      });
   }
 }

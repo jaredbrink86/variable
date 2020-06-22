@@ -1,25 +1,25 @@
 <table class="table table-striped table-hover">
     <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Date</th>
-            <th scope="col">Category</th>
-            <th scope="col">Amount</th>
-            <th class="pull-right">Actions</th>
+        <tr class="d-flex">
+            <th class="col-xs-1">#</th>
+            <th class="col-xs-2">Date</th>
+            <th class="col-xs-2">Category</th>
+            <th class="col-xs-2">Amount</th>
+            <th class="col-xs-1">Actions</th>
         </tr>
     </thead>
     <tbody>
         <tr
             #t
-            [class]="getClass(t)"
+            class="d-flex"
             *ngFor="let transaction of transactions; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ transaction.transaction_date | date:"MM/dd/y" }}</td>
-            <td>{{ transaction.category }}</td>
-            <td>${{ transaction.transaction_amount }}</td>
-            <td>
-                <button class="btn btn-danger pull-right" (click)="onDelete(transaction.id)">Delete</button>
-                <button class="btn btn-primary pull-right">Edit</button>
+            <td class="col-5">{{ i + 1 }}</td>
+            <td class="col-5">{{ transaction.transaction_date | date:"MM/dd/y" }}</td>
+            <td class="col-5">{{ transaction.category }}</td>
+            <td class="col-5">${{ transaction.transaction_amount }}</td>
+            <td class="col-1">
+                <button class="btn btn-danger" (click)="onDelete(transaction.id)">Delete</button>
+                <button class="btn btn-primary">Edit</button>
             </td>
         </tr>
     </tbody>
