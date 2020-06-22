@@ -43,3 +43,9 @@ INSERT INTO categories
     (category)
 VALUES
     ('Personal Care');
+
+
+SELECT t.id, t.transaction_date, t.transaction_amount, c.category
+FROM transactions AS t
+    INNER JOIN categories AS c
+    ON t.category_id = c.id

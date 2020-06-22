@@ -1,10 +1,10 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const pool = require("../app/database/db.js");
-const cors = require("cors");
+const express = require('express');
+const bodyParser = require('body-parser');
+const pool = require('../app/database/db.js');
+const cors = require('cors');
 
 const PORT = 4000;
-const _app_folder = "dist/variable";
+const _app_folder = 'dist/variable';
 
 const app = express();
 
@@ -17,37 +17,41 @@ app.get(express.static(_app_folder));
 //   res.status(200).sendFile(`/`, { root: _app_folder });
 // });
 
-app.get("/", async (req, res) => {
+app.get('/', async (req, res) => {
   try {
-    res.json("hello world");
+    res.json('hello world');
   } catch (err) {
     console.error(err.message);
   }
 });
 
-app.get("/categories", async (req, res) => {
+app.get('/categories', async (req, res) => {
   try {
-    const categories = await pool.query("SELECT * FROM categories");
+    const categories = await pool.query('SELECT * FROM categories');
     res.json(categories.rows);
   } catch (err) {
     console.error(err.message);
   }
 });
 
-app.get("/transactions", async (req, res) => {
+app.get('/transactions', async (req, res) => {
   try {
-    const transactions = await pool.query("SELECT * FROM transactions");
+    const transactions = await pool.query(`
+    SELECT t.id, t.transaction_date, c.category, t.transaction_amount 
+    FROM transactions AS t
+    INNER JOIN categories AS c
+    ON t.category_id = c.id`);
     res.json(transactions.rows);
   } catch (err) {
     console.error(err.message);
   }
 });
 
-app.post("/categories", async (req, res) => {
+app.post('/categories', async (req, res) => {
   try {
     const { category } = req.body;
     const newCategory = await pool.query(
-      "INSERT INTO categories (category) VALUES($1)",
+      'INSERT INTO categories (category) VALUES($1)',
       [category]
     );
   } catch (err) {
@@ -55,18 +59,19 @@ app.post("/categories", async (req, res) => {
   }
 });
 
-app.post("/transactions", async (req, res) => {
+app.post('/transactions', async (req, res) => {
   try {
+    console.log(req.body);
     const transactionAmount = +req.body.amount;
     const transactionDate = req.body.date;
     const category = await pool.query(
       `SELECT id FROM categories where category = '${req.body.category}'`
     );
     const newTransaction = await pool.query(
-      "INSERT INTO transactions (transaction_date, category_id, transaction_amount) VALUES($1, $2, $3)",
+      'INSERT INTO transactions (transaction_date, category_id, transaction_amount) VALUES($1, $2, $3)',
       [transactionDate, category.rows[0].id, transactionAmount]
     );
-    res.json("Record Added");
+    res.json('Record Added');
   } catch (err) {
     console.error(err.message);
   }

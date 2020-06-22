@@ -9,49 +9,16 @@
         </tr>
     </thead>
     <tbody>
-        <tr [class]="checkCategory" *ngIf="test === true">
-            <th scope="row">data item{{ transaction.amount }}</th>
-            <td class="active">data item{{ transaction.category }}</td>
-            <td class="active">data item{{ transaction.amount }}</td>
-        </tr>
-        <tr class="danger">
-            <td>1</td>
-            <td>1/2/2019</td>
-            <td>Groceries</td>
-            <td>$122.33</td>
+        <tr
+            #t
+            [class]="getClass(t)"
+            *ngFor="let transaction of transactions; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ transaction.transaction_date | date:"MM/dd/y" }}</td>
+            <td>{{ transaction.category }}</td>
+            <td>${{ transaction.transaction_amount }}</td>
             <td>
-                <button class="btn btn-danger pull-right">Delete</button>
-                <button class="btn btn-primary pull-right">Edit</button>
-            </td>
-        </tr>
-        <tr class="warning">
-            <td>2</td>
-            <td>1/2/2019</td>
-            <td>Eating Out</td>
-            <td>45.65</td>
-            <td>
-                <button class="btn btn-danger pull-right">Delete</button>
-                <button class="btn btn-primary pull-right">Edit</button>
-            </td>
-        </tr>
-        <tr class="warning">
-            <td>2</td>
-            <td>1/2/2019</td>
-            <td>Eating Out</td>
-            <td>57.65</td>
-            <td>
-                <button class="btn btn-danger pull-right">Delete</button>
-                <button class="btn btn-primary pull-right">Edit</button>
-            </td>
-
-        </tr>
-        <tr class="success">
-            <td>2</td>
-            <td>1/2/2019</td>
-            <td>Gas</td>
-            <td>45.65</td>
-            <td>
-                <button class="btn btn-danger pull-right">Delete</button>
+                <button class="btn btn-danger pull-right" (click)="onDelete(transaction.id)">Delete</button>
                 <button class="btn btn-primary pull-right">Edit</button>
             </td>
         </tr>

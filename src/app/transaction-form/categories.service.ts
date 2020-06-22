@@ -15,7 +15,7 @@ export class CategoriesService {
           const categoriesArray = [];
           for (const key in responseData) {
             if (responseData.hasOwnProperty(key)) {
-              categoriesArray.push({ ...responseData[key], id: key });
+              categoriesArray.push({ ...responseData[key] });
             }
           }
           return categoriesArray;

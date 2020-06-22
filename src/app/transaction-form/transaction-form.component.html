@@ -1,55 +1,81 @@
 <div class="container" style="min-height:118px;">
-    <div class="row" style="margin-bottom:10px;">
-        <div class="col-xs-12">
-            <button class="btn btn-success" (click)="onNewTransactionClick()">New Transaction</button>
+  <div class="row" style="margin-bottom:10px;">
+    <div class="col-xs-12">
+      <button class="btn btn-success" (click)="onNewTransactionClick()">New Transaction</button>
+    </div>
+  </div>
+  <div class="row">
+    <form
+          (ngSubmit)="onSubmit(f)"
+          #f="ngForm"
+          *ngIf="displayForm === true">
+
+      <div class="form-group col-xs-3 col-md-3">
+        <label for="date" class="control-label">
+          Transaction Date
+        </label>
+        <input autocomplete="off"
+               id="transactionDate"
+               type="text"
+               placeholder="Select a Date"
+               class="form-control"
+               ngModel name="transactionDate"
+               #transactionDate="ngModel"
+               required
+               bsDatepicker>
+        <span *ngIf="!transactionDate.valid && transactionDate.touched" class="help-block">Please select
+          a date</span>
+      </div>
+
+      <div class="form-group col-xs-3 col-md-3">
+        <label for="category" style="margin-right:5px;">Choose a category:</label>
+        <select
+                required class="form-control"
+                id="category"
+                [ngModel]="defaultCategory"
+                name="category"
+                #category="ngModel">
+          <option value="choose">--Please choose one--</option>
+          <option *ngFor="let category of categories">
+            {{ category.category }}
+          </option>
+        </select>
+        <span *ngIf="category.value === defaultCategory && (category.dirty || category.touched)" class="help-block">
+          Please select a category
+        </span>
+      </div>
+
+      <div class="form-group col-xs-3 col-md-3">
+        <label class="control-label" for="transactionAmount">Amount (in dollars)</label>
+        <div class="input-group">
+          <div class="input-group-addon">$</div>
+          <input
+                 autocomplete="off"
+                 name="transactionAmount"
+                 type="text"
+                 class="form-control"
+                 id="exampleInputAmount"
+                 placeholder="Amount"
+                 [(ngModel)]="transactionAmount"
+                 #amount="ngModel"
+                 (blur)=formatCurrency($event)
+                 required>
         </div>
-    </div>
-    <div class="row">
-        <form (ngSubmit)="onSubmit(f)" #f="ngForm" *ngIf="displayForm === true">
-            <div class="form-group col-xs-3 col-md-3">
-                <label for="date" class="control-label">Transaction Date</label>
-                <input autocomplete="off" id="transactionDate" type="text" placeholder="Select a Date"
-                    class="form-control" ngModel name="transactionDate" #transactionDate="ngModel" required
-                    bsDatepicker>
-                <span *ngIf="!transactionDate.valid && transactionDate.touched" class="help-block">Please select
-                    a date</span>
-            </div>
-            <div class="form-group col-xs-3 col-md-3">
-                <label for="category" style="margin-right:5px;">Choose a category:</label>
-                <select required class="form-control" id="category" [ngModel]="defaultCategory" name="category"
-                    #category="ngModel">
-                    <option value="choose">--Please choose one--</option>
-                    <option *ngFor="let category of categories" value="category.category"
-                        [selected]="category.category">
-                        {{category.category}}
-                    </option>
-                </select>
-                <span *ngIf="category.value === defaultCategory && (category.dirty || category.touched)"
-                    class="help-block">
-                    Please select a category
-                </span>
-            </div>
-            <div class="form-group col-xs-3 col-md-3">
-                <label class="control-label" for="transactionAmount">Amount (in dollars)</label>
-                <div class="input-group">
-                    <div class="input-group-addon">$</div>
-                    <input autocomplete="off" name="transactionAmount" type="text" class="form-control"
-                        id="exampleInputAmount" placeholder="Amount" [(ngModel)]="transactionAmount" #amount="ngModel"
-                        (blur)=formatCurrency($event) required>
-                </div>
-                <span *ngIf="transactionAmount === '' && amount.touched" class="help-block">
-                    Please enter a valid amount
-                </span>
-                <span *ngIf="transactionAmount === '0.00' && amount.touched" class="help-block">
-                    Please enter an amount greater than $0.00
-                </span>
-            </div>
-            <div class="form-group col-xs-3 col-md-3">
-                <button [disabled]="!f.valid" type="submit" class="btn btn-primary" style="margin-top: 25px;">Add
-                    Transaction</button>
-                <button type="button" class="btn btn-danger" style="margin-top: 25px;"
-                    (click)="onCancelForm()">Cancel</button>
-            </div>
-        </form>
-    </div>
+        <span *ngIf="transactionAmount === '' && amount.touched" class="help-block">
+          Please enter a valid amount
+        </span>
+        <span *ngIf="transactionAmount === '0.00' && amount.touched" class="help-block">
+          Please enter an amount greater than $0.00
+        </span>
+      </div>
+
+      <div class="form-group col-xs-3 col-md-3">
+        <button [disabled]="!f.valid || isAmountValid() === false" type="submit" class="btn btn-primary"
+                style="margin-top: 25px;">Add
+          Transaction</button>
+        <button type="button" class="btn btn-danger" style="margin-top: 25px;" (click)="onCancelForm()">Cancel</button>
+      </div>
+
+    </form>
+  </div>
 </div>

@@ -1,23 +1,23 @@
-import { Component, OnInit, ɵsetCurrentInjector } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { NgForm } from "@angular/forms";
-import { map } from "rxjs/operators";
+import { Component, OnInit, ɵsetCurrentInjector } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
+import { map } from 'rxjs/operators';
 
-import { Category } from "./category.model";
-import { Transaction } from "./transaction.model";
-import { TransactionService } from "./transactions.service";
-import { CategoriesService } from "./categories.service";
+import { Category } from './category.model';
+import { Transaction } from './transaction.model';
+import { TransactionService } from './transactions.service';
+import { CategoriesService } from './categories.service';
 
 @Component({
-  selector: "app-transaction-form",
-  templateUrl: "./transaction-form.component.html",
-  styleUrls: ["./transaction-form.component.css"],
+  selector: 'app-transaction-form',
+  templateUrl: './transaction-form.component.html',
+  styleUrls: ['./transaction-form.component.css'],
 })
 export class TransactionFormComponent implements OnInit {
   categories: Category[] = [];
   displayForm = false;
   transactionAmount: string;
-  defaultCategory = "choose";
+  defaultCategory = 'choose';
 
   constructor(
     private http: HttpClient,
@@ -43,34 +43,44 @@ export class TransactionFormComponent implements OnInit {
     }
   }
 
-  onCategorySelect() {
-    console.log("clicked");
-  }
   onCancelForm() {
     this.displayForm = !this.displayForm;
   }
 
   onSubmit(form: NgForm) {
-    console.log(form);
     const category = form.value.category;
+    console.log(category);
     const transactionAmount = form.value.transactionAmount;
     const date = form.value.transactionDate;
     const transaction = new Transaction(date, category, transactionAmount);
-    this.transactionService.createAndStoreTransactions(transaction);
+    this.transactionService
+      .createAndStoreTransactions(transaction)
+      .subscribe((responseData) => {
+        console.log(responseData);
+        this.transactionService.transactionAdded.emit('transaction added');
+      });
     form.reset();
     this.displayForm = !this.displayForm;
   }
 
+  private isAmountValid() {
+    if (this.transactionAmount === '' || this.transactionAmount === '0.00') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   private formatCurrency(event) {
-    var uy = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+    var uy = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       maximumFractionDigits: 2,
     }).format(event.target.value);
-    if (uy === "$NaN") {
-      this.transactionAmount = "";
-    } else if (uy === "$0.00") {
-      this.transactionAmount === "0.00";
+    if (uy === '$NaN') {
+      this.transactionAmount = '';
+    } else if (+uy === 0) {
+      this.transactionAmount === '0.00';
     } else {
       this.transactionAmount = uy.slice(1);
     }
