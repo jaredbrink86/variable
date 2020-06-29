@@ -14,7 +14,8 @@
         <label for="date" class="control-label">
           Transaction Date
         </label>
-        <input autocomplete="off"
+        <input
+               autocomplete="off"
                id="transactionDate"
                type="text"
                placeholder="Select a Date"
@@ -31,17 +32,18 @@
       <div class="form-group col-xs-3 col-md-3">
         <label for="category" style="margin-right:5px;">Choose a category:</label>
         <select
-                required class="form-control"
+                class="form-control"
+                required
                 id="category"
-                [ngModel]="defaultCategory"
+                ngModel
                 name="category"
                 #category="ngModel">
           <option value="choose">--Please choose one--</option>
-          <option *ngFor="let category of categories">
+          <option *ngFor="let category of categories" value="category.category">
             {{ category.category }}
           </option>
         </select>
-        <span *ngIf="category.value === defaultCategory && (category.dirty || category.touched)" class="help-block">
+        <span *ngIf="category.value === 'choose' && (category.dirty || category.touched)" class="help-block">
           Please select a category
         </span>
       </div>
@@ -71,7 +73,8 @@
       </div>
 
       <div class="form-group col-xs-3 col-md-3">
-        <button [disabled]="!f.valid || isAmountValid() === false" type="submit" class="btn btn-primary"
+        <button [disabled]="!f.valid || isAmountValid() === false || isCategoryValid()" type="submit"
+                class="btn btn-primary"
                 style="margin-top: 25px;">Add
           Transaction</button>
         <button type="button" class="btn btn-danger" style="margin-top: 25px;" (click)="onCancelForm()">Cancel</button>

@@ -6,6 +6,7 @@ import { Category } from './category.model';
 import { Transaction } from './transaction.model';
 import { TransactionService } from '../services/transactions.service';
 import { CategoriesService } from '../services/categories.service';
+import { truncate } from 'fs';
 
 @Component({
   selector: 'app-transaction-form',
@@ -16,7 +17,7 @@ export class TransactionFormComponent implements OnInit {
   categories: Category[] = [];
   displayForm = false;
   transactionAmount: string;
-  defaultCategory = 'choose';
+  selectedCategory = 'choose';
   date;
 
   constructor(
@@ -26,10 +27,7 @@ export class TransactionFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.categoriesService.fetchCategories().subscribe((categories) => {
-      this.categories = categories;
-    });
-    this.date = new Date();
+    this.initializeForm();
   }
 
   getCategories() {
@@ -38,9 +36,16 @@ export class TransactionFormComponent implements OnInit {
     });
   }
 
+  initializeForm() {
+    this.categoriesService.fetchCategories().subscribe((categories) => {
+      this.categories = categories;
+    });
+    this.date = new Date();
+  }
   onNewTransactionClick() {
     if (!this.displayForm) {
       this.displayForm = !this.displayForm;
+      this.initializeForm();
     }
   }
 
@@ -67,18 +72,26 @@ export class TransactionFormComponent implements OnInit {
     }
   }
 
+  private isCategoryValid() {
+    return this.selectedCategory !== 'choose';
+  }
   private formatCurrency(event) {
+    const amount = parseFloat(event.target.value.replace(/,/g, ''));
     var uy = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       maximumFractionDigits: 2,
-    }).format(event.target.value);
+    }).format(amount);
     if (uy === '$NaN') {
       this.transactionAmount = '';
     } else if (+uy === 0) {
       this.transactionAmount === '0.00';
+    } else if (uy[uy.length - 3] !== '.') {
+      uy += '.00';
+      this.transactionAmount = uy.slice(1);
     } else {
       this.transactionAmount = uy.slice(1);
     }
+    console.log(uy);
   }
 }
