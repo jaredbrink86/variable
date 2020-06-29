@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { TransactionService } from '../transaction-form/transactions.service';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { TransactionService } from '../services/transactions.service';
 import { Transaction } from '../transaction-form/transaction.model';
-import { CategoriesService } from '../transaction-form/categories.service';
+import { CategoriesService } from '../services/categories.service';
 import { Category } from '../transaction-form/category.model';
 
 @Component({
@@ -11,17 +11,13 @@ import { Category } from '../transaction-form/category.model';
 })
 export class TransactionsComponent implements OnInit {
   transactions: Transaction[];
-
   constructor(private transactionService: TransactionService) {}
 
   ngOnInit() {
-    this.transactionService.transactionChanged.subscribe((data) => {
-      if (data === 'transaction changed')
-        this.transactionService.fetchTransactions().subscribe((data) => {
-          this.transactions = data;
-        });
+    this.transactionService.fetchTransactions().subscribe((responseData) => {
+      this.transactions = responseData;
     });
-    this.transactionService.fetchTransactions().subscribe((data) => {
+    this.transactionService.transactionsChanged.subscribe((data) => {
       this.transactions = data;
     });
   }
@@ -29,11 +25,6 @@ export class TransactionsComponent implements OnInit {
   getClass(t: HTMLInputElement) {}
 
   onDelete(id: number) {
-    this.transactionService
-      .deleteTransaction(id.toString())
-      .subscribe((responseData) => {
-        console.log(responseData);
-        this.transactionService.transactionChanged.emit('transaction changed');
-      });
+    this.transactionService.deleteTransaction(id.toString());
   }
 }

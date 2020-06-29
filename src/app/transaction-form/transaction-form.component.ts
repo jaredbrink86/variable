@@ -1,12 +1,11 @@
 import { Component, OnInit, ɵsetCurrentInjector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
-import { map } from 'rxjs/operators';
 
 import { Category } from './category.model';
 import { Transaction } from './transaction.model';
-import { TransactionService } from './transactions.service';
-import { CategoriesService } from './categories.service';
+import { TransactionService } from '../services/transactions.service';
+import { CategoriesService } from '../services/categories.service';
 
 @Component({
   selector: 'app-transaction-form',
@@ -18,6 +17,7 @@ export class TransactionFormComponent implements OnInit {
   displayForm = false;
   transactionAmount: string;
   defaultCategory = 'choose';
+  date;
 
   constructor(
     private http: HttpClient,
@@ -29,6 +29,7 @@ export class TransactionFormComponent implements OnInit {
     this.categoriesService.fetchCategories().subscribe((categories) => {
       this.categories = categories;
     });
+    this.date = new Date();
   }
 
   getCategories() {
@@ -53,14 +54,15 @@ export class TransactionFormComponent implements OnInit {
     const transactionAmount = form.value.transactionAmount;
     const date = form.value.transactionDate;
     const transaction = new Transaction(date, category, transactionAmount);
-    this.transactionService
-      .createAndStoreTransactions(transaction)
-      .subscribe((responseData) => {
-        console.log(responseData);
-        this.transactionService.transactionChanged.emit('transaction changed');
-      });
     form.reset();
     this.displayForm = !this.displayForm;
+    this.transactionService
+      .createAndStoreTransactions(transaction)
+      .subscribe((data) => {
+        this.transactionService.fetchTransactions().subscribe((data) => {
+          this.transactionService.transactionsChanged.emit(data);
+        });
+      });
   }
 
   private isAmountValid() {

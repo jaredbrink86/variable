@@ -1,15 +1,15 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Category } from "./category.model";
-import { map } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Category } from '../transaction-form/category.model';
+import { map } from 'rxjs/operators';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class CategoriesService {
   constructor(private http: HttpClient) {}
 
   fetchCategories() {
     return this.http
-      .get<{ [key: string]: Category }>("http://localhost:4000/categories")
+      .get<{ [key: string]: Category }>('http://localhost:4000/categories')
       .pipe(
         map((responseData) => {
           const categoriesArray = [];

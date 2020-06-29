@@ -1,12 +1,13 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Transaction } from './transaction.model';
+import { Transaction } from '../transaction-form/transaction.model';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  transactionChanged = new EventEmitter<string>();
+  transactions: Transaction[];
+  transactionsChanged = new EventEmitter<Transaction[]>();
 
   constructor(private http: HttpClient) {}
 
@@ -25,13 +26,18 @@ export class TransactionService {
               transactionsArray.push({ ...responseData[key] });
             }
           }
-          console.log(transactionsArray);
           return transactionsArray;
         })
       );
   }
 
   deleteTransaction(id: string) {
-    return this.http.post(`http://localhost:4000/transactions/${id}`, { id });
+    this.http
+      .post(`http://localhost:4000/transactions/${id}`, { id })
+      .subscribe((data) => {
+        this.fetchTransactions().subscribe((data) => {
+          this.transactionsChanged.emit(data);
+        });
+      });
   }
 }

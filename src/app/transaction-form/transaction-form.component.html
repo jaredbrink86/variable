@@ -19,10 +19,11 @@
                type="text"
                placeholder="Select a Date"
                class="form-control"
-               ngModel name="transactionDate"
+               [(ngModel)]="date" name="transactionDate"
                #transactionDate="ngModel"
                required
-               bsDatepicker>
+               bsDatepicker
+               [(bsValue)]="date">
         <span *ngIf="!transactionDate.valid && transactionDate.touched" class="help-block">Please select
           a date</span>
       </div>

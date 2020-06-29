@@ -41,6 +41,7 @@ app.get('/transactions', async (req, res) => {
     FROM transactions AS t
     INNER JOIN categories AS c
     ON t.category_id = c.id`);
+    res.status(200);
     res.json(transactions.rows);
   } catch (err) {
     console.error(err.message);
@@ -54,6 +55,7 @@ app.post('/categories', async (req, res) => {
       'INSERT INTO categories (category) VALUES($1)',
       [category]
     );
+    res.status(200);
   } catch (err) {
     console.error(err.message);
   }
@@ -62,7 +64,7 @@ app.post('/categories', async (req, res) => {
 app.post('/transactions', async (req, res) => {
   try {
     console.log(req.body);
-    const transactionAmount = +req.body.amount;
+    const transactionAmount = req.body.amount;
     const transactionDate = req.body.date;
     const category = await pool.query(
       `SELECT id FROM categories where category = '${req.body.category}'`
@@ -71,7 +73,8 @@ app.post('/transactions', async (req, res) => {
       'INSERT INTO transactions (transaction_date, category_id, transaction_amount) VALUES($1, $2, $3)',
       [transactionDate, category.rows[0].id, transactionAmount]
     );
-    res.json('Transaction Added');
+    res.status(200);
+    res.json('Transaction Added', newTransaction);
   } catch (err) {
     console.error(err.message);
   }
@@ -80,6 +83,7 @@ app.post('/transactions', async (req, res) => {
 app.post('/transactions/:id', async (req, res) => {
   try {
     await pool.query(`DELETE FROM transactions WHERE id = ${req.body.id}`);
+    res.status(200);
     res.json('Transaction Deleted');
   } catch (err) {
     console.error(err.message);

@@ -11,7 +11,7 @@ CREATE TABLE transactions
     id SERIAL PRIMARY KEY,
     transaction_date DATE NOT NULL,
     category_id INTEGER REFERENCES categories(id),
-    transaction_amount NUMERIC NOT NULL
+    transaction_amount VARCHAR NOT NULL
 );
 
 
