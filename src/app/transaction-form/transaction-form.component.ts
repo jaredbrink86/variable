@@ -56,13 +56,7 @@ export class TransactionFormComponent implements OnInit {
     const transaction = new Transaction(date, category, transactionAmount);
     form.reset();
     this.displayForm = !this.displayForm;
-    this.transactionService
-      .createAndStoreTransactions(transaction)
-      .subscribe((data) => {
-        this.transactionService.fetchTransactions().subscribe((data) => {
-          this.transactionService.transactionsChanged.emit(data);
-        });
-      });
+    this.transactionService.createAndStoreTransactions(transaction);
   }
 
   private isAmountValid() {

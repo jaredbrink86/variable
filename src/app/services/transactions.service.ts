@@ -12,7 +12,13 @@ export class TransactionService {
   constructor(private http: HttpClient) {}
 
   createAndStoreTransactions(transaction: Transaction) {
-    return this.http.post('http://localhost:4000/transactions', transaction);
+    this.http
+      .post('http://localhost:4000/transactions', transaction)
+      .subscribe((data) => {
+        this.fetchTransactions().subscribe((data) => {
+          this.transactionsChanged.emit(data);
+        });
+      });
   }
 
   fetchTransactions() {

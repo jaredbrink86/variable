@@ -74,7 +74,7 @@ app.post('/transactions', async (req, res) => {
       [transactionDate, category.rows[0].id, transactionAmount]
     );
     res.status(200);
-    res.json('Transaction Added', newTransaction);
+    res.json(newTransaction);
   } catch (err) {
     console.error(err.message);
   }
