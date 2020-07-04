@@ -39,7 +39,7 @@
                 name="category"
                 #category="ngModel">
           <option value="choose">--Please choose one--</option>
-          <option *ngFor="let category of categories" value="category.category">
+          <option *ngFor="let category of categories">
             {{ category.category }}
           </option>
         </select>

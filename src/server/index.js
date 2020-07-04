@@ -63,7 +63,6 @@ app.post('/categories', async (req, res) => {
 
 app.post('/transactions', async (req, res) => {
   try {
-    console.log(req.body);
     const transactionAmount = req.body.amount;
     const transactionDate = req.body.date;
     const category = await pool.query(

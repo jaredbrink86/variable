@@ -3,6 +3,11 @@ import { TransactionService } from '../services/transactions.service';
 import { Transaction } from '../transaction-form/transaction.model';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from '../transaction-form/category.model';
+import {
+  faSort,
+  faSortDown,
+  faSortUp,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-transactions',
@@ -11,14 +16,24 @@ import { Category } from '../transaction-form/category.model';
 })
 export class TransactionsComponent implements OnInit {
   transactions: Transaction[];
+  total: string;
+  faSort = faSort;
+  faSortUp = faSortUp;
+  faSortDown = faSortDown;
+  sortDirections = ['unsorted', 'asc', 'desc'];
+  sortedColumn = 'Date';
+  sortDirectionIndex = 0;
+
   constructor(private transactionService: TransactionService) {}
 
   ngOnInit() {
     this.transactionService.fetchTransactions().subscribe((responseData) => {
       this.transactions = responseData;
+      this.getTotal();
     });
     this.transactionService.transactionsChanged.subscribe((data) => {
       this.transactions = data;
+      this.getTotal();
     });
   }
 
@@ -26,5 +41,28 @@ export class TransactionsComponent implements OnInit {
 
   onDelete(id: number) {
     this.transactionService.deleteTransaction(id.toString());
+  }
+
+  onColumnSort(column: string) {
+    if (this.sortDirectionIndex === 2 && this.sortedColumn === column) {
+      this.sortDirectionIndex = 0;
+    } else if (this.sortedColumn !== column) {
+      this.sortDirectionIndex = 1;
+    } else {
+      this.sortDirectionIndex++;
+    }
+    this.sortedColumn = column;
+    this.transactions = this.transactionService.sortTransactions(category);
+  }
+
+  getTotal() {
+    const total = this.transactions
+      .map((transaction) => {
+        return +transaction.amount;
+      })
+      .reduce((prev, current) => {
+        return prev + current;
+      });
+    this.total = total.toFixed(2);
   }
 }

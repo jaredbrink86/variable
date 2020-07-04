@@ -22,19 +22,22 @@ export class TransactionService {
   }
 
   fetchTransactions() {
-    return this.http
-      .get<{ [key: string]: Transaction }>('http://localhost:4000/transactions')
-      .pipe(
-        map((responseData) => {
-          const transactionsArray = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              transactionsArray.push({ ...responseData[key] });
-            }
+    return this.http.get('http://localhost:4000/transactions').pipe(
+      map((responseData) => {
+        const transactionsArray = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            transactionsArray.push({
+              id: responseData[key].id,
+              date: responseData[key].transaction_date,
+              category: responseData[key].category,
+              amount: responseData[key].transaction_amount,
+            });
           }
-          return transactionsArray;
-        })
-      );
+        }
+        return transactionsArray;
+      })
+    );
   }
 
   deleteTransaction(id: string) {
@@ -46,4 +49,6 @@ export class TransactionService {
         });
       });
   }
+
+  sortTransactions(column) {}
 }

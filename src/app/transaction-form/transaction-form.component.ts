@@ -6,7 +6,6 @@ import { Category } from './category.model';
 import { Transaction } from './transaction.model';
 import { TransactionService } from '../services/transactions.service';
 import { CategoriesService } from '../services/categories.service';
-import { truncate } from 'fs';
 
 @Component({
   selector: 'app-transaction-form',
@@ -55,7 +54,6 @@ export class TransactionFormComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     const category = form.value.category;
-    console.log(category);
     const transactionAmount = form.value.transactionAmount;
     const date = form.value.transactionDate;
     const transaction = new Transaction(date, category, transactionAmount);
@@ -92,6 +90,5 @@ export class TransactionFormComponent implements OnInit {
     } else {
       this.transactionAmount = uy.slice(1);
     }
-    console.log(uy);
   }
 }
