@@ -52,7 +52,7 @@ export class TransactionsComponent implements OnInit {
       this.sortDirectionIndex++;
     }
     this.sortedColumn = column;
-    this.transactions = this.transactionService.sortTransactions(category);
+    // this.transactions = this.transactionService.sortTransactions(category);
   }
 
   getTotal() {

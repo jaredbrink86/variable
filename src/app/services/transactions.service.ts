@@ -50,5 +50,7 @@ export class TransactionService {
       });
   }
 
-  sortTransactions(column) {}
+  // sortTransactions(column) {
+  //   return this.transactions.sort((a, b) => (transactions.column > ) ? 1 : -1)
+  // }
 }
