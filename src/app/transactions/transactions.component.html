@@ -48,18 +48,25 @@
             #t
             class="d-flex"
             *ngFor="let transaction of transactions; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>
-                {{ transaction.date | date:"MM/dd/y" }}
-            </td>
-            <td>{{ transaction.category }}</td>
-            <td>${{ transaction.amount }}</td>
-            <td>
-                <button class="btn btn-primary">Edit</button>
-                <button class="btn btn-danger" (click)="onDelete(transaction.id)">Delete</button>
-            </td>
+            <ng-container *ngIf="editMode === false || editingRow !== transaction.id; else edit">
+                <td>{{ i + 1 }}</td>
+                <td>
+                    {{ transaction.date | date:"MM/dd/y" }}
+                </td>
+                <td>{{ transaction.category }}</td>
+                <td>${{ transaction.amount }}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="onEdit(transaction.id)">Edit</button>
+                    <button class="btn btn-danger" (click)="onDelete(transaction.id)">Delete</button>
+                </td>
+            </ng-container>
+            <ng-template #edit>
+                <td colspan="5">
+                    <app-transaction-edit></app-transaction-edit>
+                </td>
+            </ng-template>
         </tr>
-        <tr style="background-color: white;">
+        <tr style=" background-color: white;">
             <td></td>
             <td></td>
             <td>Total: </td>

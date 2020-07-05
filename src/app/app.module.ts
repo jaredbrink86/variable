@@ -11,6 +11,7 @@ import { TransactionFormComponent } from './transaction-form/transaction-form.co
 import { HeaderComponent } from './header/header.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TransactionEditComponent } from './transaction-edit/transaction-edit.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TransactionFormComponent,
     HeaderComponent,
     TransactionsComponent,
+    TransactionEditComponent,
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 export class TransactionService {
   transactions: Transaction[];
   transactionsChanged = new EventEmitter<Transaction[]>();
+  editCanceled = new EventEmitter<boolean>();
 
   constructor(private http: HttpClient) {}
 
@@ -60,6 +61,10 @@ export class TransactionService {
       sortedTransactions = transactions.sort(this.compareAmounts);
     }
     this.transactionsChanged.emit(sortedTransactions);
+  }
+
+  cancelEdit() {
+    this.editCanceled.emit(false);
   }
 
   private compareDates(a, b) {

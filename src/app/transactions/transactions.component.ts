@@ -23,6 +23,8 @@ export class TransactionsComponent implements OnInit {
   sortDirections = ['unsorted', 'asc', 'desc'];
   sortedColumn = 'Date';
   sortDirectionIndex = 0;
+  editMode = false;
+  editingRow: 29;
 
   constructor(private transactionService: TransactionService) {}
 
@@ -34,6 +36,9 @@ export class TransactionsComponent implements OnInit {
     this.transactionService.transactionsChanged.subscribe((data) => {
       this.transactions = data;
       this.getTotal();
+    });
+    this.transactionService.editCanceled.subscribe((data) => {
+      this.editMode = data;
     });
   }
 
@@ -65,5 +70,11 @@ export class TransactionsComponent implements OnInit {
         return prev + current;
       });
     this.total = total.toFixed(2);
+  }
+
+  onEdit(id) {
+    this.editMode = true;
+    this.editingRow = id;
+    console.log(id);
   }
 }
