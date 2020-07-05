@@ -43,7 +43,7 @@ export class TransactionsComponent implements OnInit {
     this.transactionService.deleteTransaction(id.toString());
   }
 
-  onColumnSort(column: string) {
+  onColumnSortAscending(column: string) {
     if (this.sortDirectionIndex === 2 && this.sortedColumn === column) {
       this.sortDirectionIndex = 0;
     } else if (this.sortedColumn !== column) {
@@ -52,7 +52,8 @@ export class TransactionsComponent implements OnInit {
       this.sortDirectionIndex++;
     }
     this.sortedColumn = column;
-    // this.transactions = this.transactionService.sortTransactions(category);
+    this.transactionService.sortTransactions(column, this.transactions);
+    console.log(this.transactions);
   }
 
   getTotal() {

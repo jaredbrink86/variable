@@ -50,7 +50,39 @@ export class TransactionService {
       });
   }
 
-  // sortTransactions(column) {
-  //   return this.transactions.sort((a, b) => (transactions.column > ) ? 1 : -1)
-  // }
+  sortTransactions(column, transactions) {
+    let sortedTransactions;
+    if (column === 'Date') {
+      sortedTransactions = transactions.sort(this.compareDates);
+    } else if (column === 'Category') {
+      sortedTransactions = transactions.sort(this.compareCategories);
+    } else {
+      sortedTransactions = transactions.sort(this.compareAmounts);
+    }
+    this.transactionsChanged.emit(sortedTransactions);
+  }
+
+  private compareDates(a, b) {
+    const columnA = a.date.toUpperCase();
+    const columnB = b.date.toUpperCase();
+    let comparison = 0;
+    columnA > columnB ? (comparison = 1) : (comparison = -1);
+    return comparison;
+  }
+
+  private compareCategories(a, b) {
+    const columnA = a.category.toUpperCase();
+    const columnB = b.category.toUpperCase();
+    let comparison = 0;
+    columnA > columnB ? (comparison = 1) : (comparison = -1);
+    return comparison;
+  }
+
+  private compareAmounts(a, b) {
+    const columnA = a.amount.toUpperCase();
+    const columnB = b.amount.toUpperCase();
+    let comparison = 0;
+    columnA > columnB ? (comparison = 1) : (comparison = -1);
+    return comparison;
+  }
 }
