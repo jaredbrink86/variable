@@ -72,9 +72,9 @@ export class TransactionsComponent implements OnInit {
     this.total = total.toFixed(2);
   }
 
-  onEdit(id) {
+  onEdit(transaction) {
     this.editMode = true;
-    this.editingRow = id;
-    console.log(id);
+    this.editingRow = transaction.id;
+    // this.transactionService.startEdit(transaction);
   }
 }

@@ -17,7 +17,7 @@
                required
                bsDatepicker
                [(bsValue)]="date">
-        <span *ngIf="!transactionDate.valid && transactionDate.touched" class="help-block">Please select
+        <span *ngIf="!transactionDate.valid" class="help-block">Please select
             a date</span>
     </div>
 
@@ -30,14 +30,10 @@
                 ngModel
                 name="category"
                 #category="ngModel">
-            <option value="choose">--Please choose one--</option>
-            <option *ngFor="let category of categories">
+            <option *ngFor="let category of categories" [selected]="category.category === editedTransaction.category">
                 {{ category.category }}
             </option>
         </select>
-        <span *ngIf="category.value === 'choose' && (category.dirty || category.touched)" class="help-block">
-            Please select a category
-        </span>
     </div>
 
     <div class="form-group col-xs-3 col-md-3">
@@ -65,7 +61,7 @@
     </div>
 
     <div class="form-group col-xs-3 col-md-3 text-right">
-        <button [disabled]="!f.valid || isAmountValid() === false || isCategoryValid()" type="submit"
+        <button type="submit"
                 class="btn btn-primary"
                 style="margin-top: 25px;">Save Changes</button>
         <button type="button" class="btn btn-danger" style="margin-top: 25px;"

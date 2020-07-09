@@ -56,13 +56,14 @@
                 <td>{{ transaction.category }}</td>
                 <td>${{ transaction.amount }}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="onEdit(transaction.id)">Edit</button>
+                    <button class="btn btn-primary" (click)="onEdit(transaction)">Edit</button>
                     <button class="btn btn-danger" (click)="onDelete(transaction.id)">Delete</button>
                 </td>
             </ng-container>
             <ng-template #edit>
                 <td colspan="5">
-                    <app-transaction-edit></app-transaction-edit>
+                    <app-transaction-edit [editedTransaction]="transaction">
+                    </app-transaction-edit>
                 </td>
             </ng-template>
         </tr>

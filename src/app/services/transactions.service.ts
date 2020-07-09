@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Transaction } from '../transaction-form/transaction.model';
 import { map } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
+  // isEditing = new EventEmitter<Transaction>();
   transactions: Transaction[];
   transactionsChanged = new EventEmitter<Transaction[]>();
   editCanceled = new EventEmitter<boolean>();
@@ -66,6 +67,10 @@ export class TransactionService {
   cancelEdit() {
     this.editCanceled.emit(false);
   }
+
+  // startEdit(transaction) {
+  //   this.isEditing.emit(transaction);
+  // }
 
   private compareDates(a, b) {
     const columnA = a.date.toUpperCase();
