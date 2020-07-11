@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 
@@ -13,7 +13,7 @@ import { Transaction } from '../transaction-form/transaction.model';
   styleUrls: ['./transaction-edit.component.css'],
 })
 export class TransactionEditComponent implements OnInit {
-  @Input() editedTransaction: Transaction;
+  @Input() editedTransaction;
   date: Date;
   categories: Category[] = [];
   displayForm = false;
@@ -47,12 +47,18 @@ export class TransactionEditComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     const category = form.value.category;
+    console.log(category);
     const transactionAmount = form.value.transactionAmount;
     const date = form.value.transactionDate;
-    const transaction = new Transaction(date, category, transactionAmount);
+    const transaction = {
+      date: date,
+      category: category,
+      transactionAmount: transactionAmount,
+      id: this.editedTransaction.id,
+    };
     form.reset();
-    this.displayForm = !this.displayForm;
-    this.transactionService.createAndStoreTransactions(transaction);
+    this.transactionService.editSubmitted.emit(false);
+    this.transactionService.updateTransaction(transaction);
   }
 
   onCancelForm() {
@@ -60,6 +66,7 @@ export class TransactionEditComponent implements OnInit {
   }
 
   setTransactionProperties() {
+    console.log(this.editedTransaction);
     const transactionDate = this.editedTransaction.date;
     this.date = new Date(transactionDate.toString());
     this.transactionAmount = this.editedTransaction.amount;

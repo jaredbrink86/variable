@@ -6,9 +6,9 @@ import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  // isEditing = new EventEmitter<Transaction>();
   transactions: Transaction[];
   transactionsChanged = new EventEmitter<Transaction[]>();
+  editSubmitted = new EventEmitter<boolean>();
   editCanceled = new EventEmitter<boolean>();
 
   constructor(private http: HttpClient) {}
@@ -45,6 +45,19 @@ export class TransactionService {
   deleteTransaction(id: string) {
     this.http
       .post(`http://localhost:4000/transactions/${id}`, { id })
+      .subscribe((data) => {
+        this.fetchTransactions().subscribe((data) => {
+          this.transactionsChanged.emit(data);
+        });
+      });
+  }
+
+  updateTransaction(transaction) {
+    this.http
+      .post(
+        `http://localhost:4000/transactions/${transaction.id}/edit`,
+        transaction
+      )
       .subscribe((data) => {
         this.fetchTransactions().subscribe((data) => {
           this.transactionsChanged.emit(data);

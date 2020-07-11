@@ -27,7 +27,7 @@
                 class="form-control"
                 required
                 id="category"
-                ngModel
+                [(ngModel)]="selectedCategory"
                 name="category"
                 #category="ngModel">
             <option *ngFor="let category of categories" [selected]="category.category === editedTransaction.category">

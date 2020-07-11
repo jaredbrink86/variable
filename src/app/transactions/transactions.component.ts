@@ -40,6 +40,9 @@ export class TransactionsComponent implements OnInit {
     this.transactionService.editCanceled.subscribe((data) => {
       this.editMode = data;
     });
+    this.transactionService.editSubmitted.subscribe((data) => {
+      this.editMode = data;
+    });
   }
 
   getClass(t: HTMLInputElement) {}

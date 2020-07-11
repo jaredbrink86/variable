@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const pool = require('../app/database/db.js');
 const cors = require('cors');
+const { readJsonConfigFile } = require('typescript');
 
 const PORT = 4000;
 const _app_folder = 'dist/variable';
@@ -86,6 +87,25 @@ app.post('/transactions/:id', async (req, res) => {
     res.json('Transaction Deleted');
   } catch (err) {
     console.error(err.message);
+  }
+});
+
+app.post('/transactions/:id/edit', async (req, res) => {
+  try {
+    const category = await pool.query(
+      `SELECT id FROM categories where category = '${req.body.category}'`
+    );
+    const categoryId = category.rows[0].id;
+    console.log(req.body.id);
+    console.log(req.body.transactionAmount);
+    console.log(req.body.date);
+    console.log(categoryId);
+    await pool.query(
+      `UPDATE transactions SET transaction_date = '${req.body.date}', category_id = '${categoryId}', transaction_amount = '${req.body.transactionAmount}' WHERE id = ${req.body.id}`
+    );
+    res.json('Transaction Updated');
+  } catch (err) {
+    console.error(err);
   }
 });
 
