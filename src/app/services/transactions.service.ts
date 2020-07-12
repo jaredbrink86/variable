@@ -65,35 +65,44 @@ export class TransactionService {
       });
   }
 
-  sortTransactions(column, transactions) {
+  sortTransactionsAsc(column, transactions, direction) {
     let sortedTransactions;
-    if (column === 'Date') {
-      sortedTransactions = transactions.sort(this.compareDates);
-    } else if (column === 'Category') {
-      sortedTransactions = transactions.sort(this.compareCategories);
-    } else {
-      sortedTransactions = transactions.sort(this.compareAmounts);
+    if (direction === 'asc') {
+      if (column === 'Date') {
+        sortedTransactions = transactions.sort(this.compareDatesAsc);
+      } else if (column === 'Category') {
+        sortedTransactions = transactions.sort(this.compareCategoriesAsc);
+      } else {
+        sortedTransactions = transactions.sort(this.compareAmountsAsc);
+      }
+      this.transactionsChanged.emit(sortedTransactions);
+    } else if (direction === 'desc') {
+      if (column === 'Date') {
+        sortedTransactions = transactions.sort(this.compareDatesDesc);
+      } else if (column === 'Category') {
+        sortedTransactions = transactions.sort(this.compareCategoriesDesc);
+      } else {
+        sortedTransactions = transactions.sort(this.compareAmountsDesc);
+      }
+      this.transactionsChanged.emit(sortedTransactions);
+    } else if (direction === 'unsorted') {
+      sortedTransactions = transactions.sort(this.compareDatesDesc);
     }
-    this.transactionsChanged.emit(sortedTransactions);
   }
 
   cancelEdit() {
     this.editCanceled.emit(false);
   }
 
-  // startEdit(transaction) {
-  //   this.isEditing.emit(transaction);
-  // }
-
-  private compareDates(a, b) {
-    const columnA = a.date.toUpperCase();
-    const columnB = b.date.toUpperCase();
+  private compareDatesAsc(a, b) {
+    const columnA = a.date;
+    const columnB = b.date;
     let comparison = 0;
     columnA > columnB ? (comparison = 1) : (comparison = -1);
     return comparison;
   }
 
-  private compareCategories(a, b) {
+  private compareCategoriesAsc(a, b) {
     const columnA = a.category.toUpperCase();
     const columnB = b.category.toUpperCase();
     let comparison = 0;
@@ -101,11 +110,36 @@ export class TransactionService {
     return comparison;
   }
 
-  private compareAmounts(a, b) {
-    const columnA = a.amount.toUpperCase();
-    const columnB = b.amount.toUpperCase();
+  private compareAmountsAsc(a, b) {
+    const columnA = +a.amount.replace(/[, ]+/g, '').trim();
+    const columnB = +b.amount.replace(/[, ]+/g, '').trim();
+    console.log(columnB, columnA);
     let comparison = 0;
     columnA > columnB ? (comparison = 1) : (comparison = -1);
+    return comparison;
+  }
+
+  private compareDatesDesc(a, b) {
+    const columnA = a.date;
+    const columnB = b.date;
+    let comparison = 0;
+    columnA < columnB ? (comparison = 1) : (comparison = -1);
+    return comparison;
+  }
+
+  private compareCategoriesDesc(a, b) {
+    const columnA = a.category.toUpperCase();
+    const columnB = b.category.toUpperCase();
+    let comparison = 0;
+    columnA < columnB ? (comparison = 1) : (comparison = -1);
+    return comparison;
+  }
+
+  private compareAmountsDesc(a, b) {
+    const columnA = +a.amount.replace(/[, ]+/g, '').trim();
+    const columnB = +b.amount.replace(/[, ]+/g, '').trim();
+    let comparison = 0;
+    columnA < columnB ? (comparison = 1) : (comparison = -1);
     return comparison;
   }
 }

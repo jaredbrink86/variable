@@ -51,7 +51,7 @@ export class TransactionsComponent implements OnInit {
     this.transactionService.deleteTransaction(id.toString());
   }
 
-  onColumnSortAscending(column: string) {
+  onColumnSort(column: string) {
     if (this.sortDirectionIndex === 2 && this.sortedColumn === column) {
       this.sortDirectionIndex = 0;
     } else if (this.sortedColumn !== column) {
@@ -60,19 +60,28 @@ export class TransactionsComponent implements OnInit {
       this.sortDirectionIndex++;
     }
     this.sortedColumn = column;
-    this.transactionService.sortTransactions(column, this.transactions);
-    console.log(this.transactions);
+    this.transactionService.sortTransactionsAsc(
+      column,
+      this.transactions,
+      this.sortDirections[this.sortDirectionIndex]
+    );
   }
 
   getTotal() {
-    const total = this.transactions
-      .map((transaction) => {
-        return +transaction.amount;
-      })
-      .reduce((prev, current) => {
-        return prev + current;
-      });
-    this.total = total.toFixed(2);
+    if (this.transactions.length) {
+      const total = this.transactions
+        .map((transaction) => {
+          let amount = +transaction.amount.replace(/[, ]+/g, '').trim();
+          return amount;
+        })
+        .reduce((prev, current) => {
+          return prev + current;
+        });
+      this.total = total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      console.log(this.total);
+    } else {
+      this.total = '0';
+    }
   }
 
   onEdit(transaction) {
