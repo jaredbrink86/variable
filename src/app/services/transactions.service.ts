@@ -90,6 +90,13 @@ export class TransactionService {
     }
   }
 
+  filterTransactions(category, transactions) {
+    const filteredTransactions = transactions.filter((transaction) => {
+      return transaction.category === category;
+    });
+    this.transactionsChanged.emit(filteredTransactions);
+  }
+
   cancelEdit() {
     this.editCanceled.emit(false);
   }

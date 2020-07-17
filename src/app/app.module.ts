@@ -12,6 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TransactionEditComponent } from './transaction-edit/transaction-edit.component';
+import { TransactionChartComponent } from './transaction-chart/transaction-chart.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { TransactionEditComponent } from './transaction-edit/transaction-edit.co
     HeaderComponent,
     TransactionsComponent,
     TransactionEditComponent,
+    TransactionChartComponent,
   ],
   imports: [
     BrowserModule,
