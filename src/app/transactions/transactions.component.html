@@ -44,6 +44,9 @@
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td *ngIf="!transactions.length" class="d-flex" colspan="12">No Data</td>
+        </tr>
         <tr
             #t
             class="d-flex"
