@@ -2,8 +2,6 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import * as c3 from 'c3';
 import { TransactionService } from '../services/transactions.service';
 import { Transaction } from '../transaction-form/transaction.model';
-import { filter } from 'rxjs/operators';
-import { initOffset } from 'ngx-bootstrap/chronos/units/offset';
 
 @Component({
   selector: 'app-transaction-chart',
